@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!-- <iframe src="http://baidu.com" frameborder="0"></iframe> -->
+ json 是一种数据格式
+ jsonp 是一种数据调用的方式。
+ 什么是JSONP
+    为了便于客户端使用数据，逐渐形成了一种非正式传输协议，人们把它称作JSONP，该协议的一个要点就是允许用户传递一个callback参数给服务端，然后服务端返回数据时会将这个callback参数作为函数名来包裹住JSON数据，这样客户端就可以随意定制自己的函数来自动处理返回数据了。
+    
+    JSONP的优点是：它不像XMLHttpRequest对象实现的Ajax请求那样受到同源策略的限制；它
+    的兼容性更好，在更加古老的浏览器中都可以运行，不需要XMLHttpRequest或ActiveX的支
+    持；并且在请求完毕后可以通过调用callback的方式回传结果。
+
+
+<!-- 1、ajax和jsonp这两种技术在调用方式上“看起来”很像，目的也一样，都是请求一个url，然后把服务器返回的数据进行处理，因此jquery和ext等框架都把jsonp作为ajax的一种形式进行了封装；
+
+2、但ajax和jsonp其实本质上是不同的东西。ajax的核心是通过XmlHttpRequest获取非本页内容，而jsonp的核心则是动态添加script标签来调用服务器提供的js脚本。
+
+3、所以说，其实ajax与jsonp的区别不在于是否跨域，ajax通过服务端代理一样可以实现跨域，jsonp本身也不排斥同域的数据的获取。
+
+4、还有就是，jsonp是一种方式或者说非强制性协议，如同ajax一样，它也不一定非要用json格式来传递数据，如果你愿意，字符串都行，只不过这样不利于用jsonp提供公开服务。
+
+总而言之，jsonp不是ajax的一个特例，哪怕jquery等巨头把jsonp封装进了ajax，也不能改变着一点！ -->
+</body>
+
+<script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+<script type="text/javascript">
+	// success({"name":"abc","age":"18"})
+	// $.ajax({
+	// 	url:"http://localhost/ajax2/getimg.php",
+	// 	type:"get",
+	// 	data:{start:0,num:20},
+	// 	success:function (data) {
+	// 		console.log(data);
+	// 	}
+	// })
+
+	function abc(data) {
+		console.log(data);
+	}
+</script>
+<!-- <script type="text/javascript" src="http://192.168.0.148/ajax2/data.php?cb=abc"></script> -->
+<script type="text/javascript" src="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=游戏&cb=abc"></script>
+
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

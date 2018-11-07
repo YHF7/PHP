@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	姓名：<h3>？</h3>
+	年龄：<p>？</p>
+	<button>获取数据</button>
+</body>
+<script type="text/javascript">
+var h3 = document.querySelector('h3');
+var p = document.querySelector('p');
+var btn = document.querySelector('button');
+
+//创建ajax的对象
+var xmlhttp = new XMLHttpRequest();
+//点击获取数据按钮
+btn.onclick = function () {
+	xmlhttp.open("POST","post.php");
+	xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	xmlhttp.send("name=abc&age=23");
+}
+//请求状态改变的时候触发
+xmlhttp.onreadystatechange = function () {
+	if (xmlhttp.readyState==4) {//判断请求完成
+		if (xmlhttp.status==200) {//判断请求成功
+			// console.log(xmlhttp.responseText);
+			var json = JSON.parse(xmlhttp.responseText);
+			// console.log(json);
+			h3.innerHTML = json.name;
+			p.innerHTML = json.age;
+		}else{
+			alert("请求失败")
+		}
+	}
+}
+
+</script>
+</html>

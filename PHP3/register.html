@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<form action="register.php" method="post">
+	用户名：<input name="name" type="text"><br>		
+	密码：  <input name="pwd" type="password"><br>	
+	确认密码：<input type="password"><br>
+	<input type="submit">
+</form>
+</body>
+<script type="text/javascript">
+// var input = document.querySelectorAll("input");
+// var form = document.querySelector("form");
+// form.onsubmit = function (e) {
+// 	if (input[0].value==''||input[1].value=='') {
+// 		alert("请输入账号和密码");
+// 		e.preventDefault();
+// 		return false;
+// 	}
+// 	if (input[1].value!=input[2].value) {
+// 		alert("密码不一致");
+// 		e.preventDefault();
+// 		return false;
+// 	}
+// }
+
+	var input = document.querySelectorAll("input");
+	var form = document.querySelector("form");
+	form.onsubmit = function(e) {
+		if(input[0].value==''||input[1].value==''){
+			alert("请输入账号密码");
+			return false;
+		}
+		if(input[1].value!=input[2].value){
+			alert("密码不一致");
+			e.preventDefault();
+			return false;
+		}
+	}
+
+
+</script>
+</html>
+
+
+

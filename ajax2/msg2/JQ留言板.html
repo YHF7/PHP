@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>新浪微博</title>
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style>
+* { padding: 0; margin: 0; }
+li { list-style: none; }
+body { background: #f9f9f9; font-size: 14px; }
+
+#box { width: 450px; padding: 10px; border: 1px solid #ccc; background: #f4f4f4; margin: 10px auto; }
+#fill_in { margin-bottom: 10px; }
+#fill_in li { padding: 5px 0; }
+#fill_in .text { width: 380px; height: 30px; padding: 0 10px; border: 1px solid #ccc; line-height: 30px; font-size: 14px; font-family: arial; }
+#fill_in textarea { width: 380px; height: 100px; line-height: 20px; padding: 5px 10px; border: 1px solid #ccc; font-size: 14px; font-family: arial; overflow: auto; vertical-align: top; }
+#fill_in .btn { border: none; width: 100px; height: 30px; border: 1px solid #ccc; background: #fff; color: #666; font-size: 14px; position: relative; left: 42px; }
+
+#message_text h3 { font-size: 14px; padding: 6px 0 4px 10px; background: #ddd; border-bottom: 1px solid #ccc; }
+#message_text li { background: #f9f9f9; border-bottom: 1px solid #ccc; color: #666; overflow: hidden;display: none;}
+#message_text li.show{display: block; }
+#message_text li a{ float:right;}
+#message_text h3 { padding: 10px; font-size: 14px; line-height: 24px; }
+#message_text p { padding: 0 10px 10px; text-indent: 28px; line-height: 20px;}
+</style>
+</head>
+
+<body>
+<div id="box">
+    <ul id="fill_in">
+        <form>
+            <li>姓名：<input id="txt1" type="text" class="text" /></li>
+            <li>内容：<textarea id="txt2"></textarea></li>
+            <li><input id="btn" type="button" value="提交" class="btn"/></li>
+        </form>
+    </ul>
+    <div id="message_text">
+        <h2>显示留言</h2>
+        <ul>
+        	<!-- <li><h3>名字</h3><p>内容<a href="###">删除</a></p></li> -->
+        </ul>
+    </div>
+    <nav aria-label="Page navigation">
+  <ul class="pagination">
+    
+  </ul>
+</nav>
+</div>
+</body>
+<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+
+var $txt1 = $("#txt1");//文本1
+var $txt2 = $("#txt2");//文本2
+var $btn = $("#btn");//按钮
+var $ul = $("#message_text ul");//留言ul
+
+var len = 0;
+var page = 1;
+
+getData();
+//获取数据函数
+function getData() {
+	$.ajax({
+		type:"get",
+		url:"get.php",
+		data:{page:page},
+		dataType:"json",
+		success:function(rs) {
+			$ul.html("");
+			if(rs.error==0){
+				var arr = rs.data;
+				for (var i = 0; i < arr.length; i++) {
+					$li = $('<li class="show" data-id="'+arr[i].id+'"><h3>'+arr[i].name+'</h3><p>'+arr[i].con+'<a href="###">删除</a></p></li>');
+					$li.find("a").on("click",function() {
+						remove(this);
+					})
+					$ul.prepend($li);
+				}
+			}
+			len = rs.len;
+			// console.log(data);
+			createPage();
+		}
+	})
+}
+
+//删除函数
+function remove(a) {
+	$li = $(a).parents("li");
+	$.ajax({
+		type:"get",
+		url:"remove.php",
+		dataType:"json",
+		data:{id:$li.attr("data-id")},
+		success:function(rs) {
+			if (rs.error==0) {
+				$li.slideUp(function() {
+					$li.remove();
+				})
+			}
+		}
+	})
+}
+
+//点击提交函数
+$btn.on("click",function () {
+	var val1 =$txt1.val();//用户
+	var val2 =$txt2.val();//密码
+	if(val1==""||val2==""){
+		alert("用户和密码不能为空");
+		return;
+	}
+	$.ajax({
+		type:"post",
+		url:"add.php",
+		data:{name:val1,con:val2},
+		dataType:"json",
+		success:function(data) {
+			console.log(data);
+			if(data.error==0) {
+				createLi(data.id);
+			}
+		},
+		error:function() {
+			alert("请求失败");
+		}
+	})
+	
+})
+
+
+function createLi(id) {
+	var val1 = $txt1.val();//用户名
+	var val2 = $txt2.val();//内容
+	//创建$li
+	var $li = $("<li data-id="+id+"><h3>"+val1+"</h3><p>"+val2+"<a href=### >删除</a></p></li>");
+	var $a = $li.find("a");//获取li里面的a标签
+	$a.on("click",function () {		
+		remove(this);
+	})
+
+	// $ul.append($li);//把$li添加到$ul最后面
+	$ul.prepend($li);//把$li添加到$ul最开头
+	$li.slideDown(1000);//显示动画(高度增加)
+
+	$txt2.val("");
+	$txt2.focus();
+}
+
+
+function createPage(){
+	console.log(len)
+	var pages = Math.ceil(len/5);
+	$(".pagination").html("");
+	$prev = $('<li><a href="javascript:void(0)" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>');
+	$prev.on("click",function () {
+		page--;
+		if (page<1) {
+			page=1
+		}
+		getData();
+	})
+    $next = $('<li class="next"><a href="javascript:void(0)" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>');
+    $next.on("click",function () {
+    	page++;
+    	if (page>pages) {
+    		page=pages
+    	}
+    	getData();
+    })
+    if (page!=1) {
+    	$(".pagination").append($prev);
+    }
+    
+	for (var i = 0; i < pages; i++) {
+		$li = $('<li class="pages"><a href="javascript:void(0)">'+(i+1)+'</a></li>');
+		$(".pagination").append($li);
+		$li.on("click",function () {		
+			page = $(this).find("a").html();
+			console.log(page)
+			getData();
+		})
+	}
+   
+    if (page!=pages) {
+    	 $(".pagination").append($next);
+    }
+    active();
+}
+function active() {
+	$(".pages").removeClass("active");
+	$(".pages").eq(page-1).addClass("active");
+}
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

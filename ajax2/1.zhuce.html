@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form action="">
+		<div>用户名：<input id="txt" type="text"><span></span></div>
+		<div>密码：<input class="pwd" type="password"></div>
+		<div>密码：<input class="pwd" type="password"></div>
+		<input id="btn" type="button" value="提交">
+	</form>
+
+</body>
+<script type="text/javascript" src='jquery-3.0.0.min.js'></script>
+<script type="text/javascript">	
+	// $("#txt").on("blur",function () {
+	// 	$.ajax({
+	// 		type:"get",
+	// 		url:"check.php",
+	// 		data:{name:this.value},
+	// 		dataType:"json",
+	// 		success:function (data) {
+	// 			if (data.error==0) {
+	// 				$("span").html("可以注册");
+	// 				$("span").css("color","green");
+	// 			}else{
+	// 				$("span").html("用户名已存在");
+	// 				$("span").css("color","red");				
+	// 			}
+	// 		}
+	// 	})
+	// })
+
+
+	$("#txt").on("blur",function() {
+		$.ajax({
+			type:"get",
+			url:"check.php",
+			data:{name:this.value},
+			dataType:"json",
+			success:function(data) {
+				if (data.error==0) {
+					$("span").html("可以注册");
+					$("span").css("color","green");
+				}else{
+					$("span").html("用户已存在");
+					$("span").css("color","red");	
+				}
+			}
+		})
+	})
+	
+
+
+</script>
+</html>
+
+
+

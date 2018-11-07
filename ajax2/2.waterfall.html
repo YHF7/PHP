@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	div{
+		width: 300px;
+		background: red;
+		font-size: 50px;
+		text-align: center;
+		position: absolute;
+/*		left: 0;
+		top: 0;*/
+		transition: 1s;
+	}
+	img{width: 100%;}
+	</style>
+</head>
+<body></body>
+<script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+<script type="text/javascript">
+var arr = [];//存放DIV
+var arrH = ["第1列","第2列","第3列"];//记录每一列的高度
+//改变每个div的位置
+// var imgUrl = ["img/B1.jpg","img/B2.jpg","img/B3.jpg","img/B4.jpg","img/B5.jpg","img/B6.jpg","img/B7.jpg","img/B8.jpg","img/B9.jpg","img/B10.jpg"];
+var index = 0;
+var s = 0;
+getImg(0,20);
+function getImg(start,num) {
+	$.ajax({
+		type:"get",
+		url:"getimg.php",
+		data:{start:start,num:num},
+		dataType:"json",
+		success:function (arr) {
+			s += num;
+			craeteDiv(arr)//执行创建div
+		}
+	})
+}
+
+//创建DIV函数
+function craeteDiv(imgArr) {
+	for (var i = 0; i < imgArr.length; i++) {
+		index++;
+		var div = document.createElement("div");
+		div.innerHTML = "<img src='"+imgArr[i]+"'>";
+
+		arr.push(div);//把div放到数组里面
+		document.body.appendChild(div);
+	}
+	change();//排列DIV
+}
+
+
+function change() {	
+	var winW = window.innerWidth;
+	var num = parseInt(winW/310);//计算一行多少列
+	arrH = [];
+	var center = (winW-num*310-10)/2;
+	for (var i = 0; i < arr.length; i++) {
+		if (i<num) {
+			arr[i].style.left = center+i*310+"px";
+			arr[i].style.top = "0px";
+			arrH[i] = arr[i].offsetHeight+10;
+		}else{
+			var min = finMin(arrH);//找最小高度的列数
+			arr[i].style.left = center+min*310+"px";
+			arr[i].style.top = arrH[min]+"px";
+			arrH[min] += arr[i].offsetHeight+10;
+		}		
+	}	
+}
+//窗口改变大小时执行
+window.onresize = function () {
+	change();
+}
+window.onscroll = function () {
+	var sTop = document.body.scrollTop || document.documentElement.scrollTop;
+	var winH = window.innerHeight;
+
+	var minH = arrH[finMin(arrH)];
+	// console.log(sTop,winH,minH)
+	if (sTop+winH>minH) {//判断到了底下
+		getImg(s,5);
+	}
+}
+
+//找数组最小值得下标
+function finMin(arr) {
+	var min = 0;
+	for (var i = 1; i < arr.length; i++) {	
+		min = arr[min]>arr[i] ? i : min;
+	}
+	return min;
+}
+</script>
+</html>

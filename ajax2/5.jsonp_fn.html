@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+
+</body>
+<script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+<script type="text/javascript">    
+    // $.ajax({  
+    //     url: "",  
+    //     dataType: "jsonp",  
+    //     jsonp: "cb",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)  
+    //     // jsonpCallback: "fn",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据  
+    //     success: function (data) {  
+    //        console.log(data); 
+    //     },  
+    //     error: function () {  
+    //         alert('fail');  
+    //     }  
+    // });  
+
+    // jsonp({
+    //     url:"https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su",
+    //     jsonp:"cb",
+    //     data:{wd:"游戏"},
+    //     success:function(data){
+    //         console.log(data)
+    //     }
+    // })
+
+    // function jsonp(opt) {
+    //     //通过时间戳和随机数生成一个唯一函数名，防止函数名冲突
+    //     var time = Date.now();
+    //     var fn_name = "abc"+time+Math.random()*1000; 
+    //     opt.data[opt.jsonp] = fn_name;//设置cb参数名
+    //     window[fn_name] = opt.success;//设置全局函数
+
+    //     // {wd:"游戏"}转wd=游戏&abc=123
+    //     var arr = [];
+    //     for (var key in opt.data) {
+    //         arr.push(key+"="+opt.data[key]);
+    //     }
+    //     // arr=[wd=游戏,abc=123]
+    //     var str = arr.join("&");//wd=游戏&abc=123
+    //     //创建script执行请求数据代码
+    //     var script = document.createElement("script");
+    //     script.src = opt.url + "?" + str; 
+    //     document.body.appendChild(script);
+    //     document.body.removeChild(script);
+    // }
+
+
+    jsonp({
+        url: "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su",
+        jsonp:"cb",
+        data:{wd:"游戏"},
+        success:function(data){
+            console.log(data)
+        }
+    })
+    function jsonp(opt) {
+        var time = Date.now();
+        var fn_name = "abc"+time+Math.round(Math.random()*1000); 
+        opt.data[opt.jsonp] = fn_name;//设置cb参数名
+        window[fn_name] = opt.success;//设置全局函数
+        var arr = [];
+        for (var key in opt.data) {
+            arr.push(key+"="+opt.data[key]);
+        }
+        // arr=[wd=游戏,abc=123]
+        var str = arr.join("&");
+        var script = document.createElement("script");
+        script.src = opt.url + "?" + str;
+        document.body.appendChild(script);
+        document.body.removeChild(script);
+    }
+    
+
+</script>
+</html>
+
+
+
+
+
+
+
+

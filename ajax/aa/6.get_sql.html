@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button>获取数据</button>
+	<table border="1">
+		
+	</table>
+</body>
+<script type="text/javascript" src='ajax.js'></script>
+<script type="text/javascript">
+var btn = document.querySelector('button');
+var table = document.querySelector('table');
+
+btn.onclick = function () {
+	ajax({
+		type:"get",
+		url:"get_sql.php",
+		data:{},
+		dataType:"json",
+		success:function (arr) {
+			var str = "";
+			for (var i = 0; i < arr.length; i++) {
+				str += "<tr><td>"+arr[i].id+"</td><td>"+arr[i].name+"</td><td>"+arr[i].pwd+"</td><td>"+arr[i].age+"</td></tr>";
+			}
+			table.innerHTML = str;
+		}
+	})
+
+}
+
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+

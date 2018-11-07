@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<country>
+    <province>
+        <name>广东5</name>
+        <cities>
+            <city>广州2</city>
+            <city>深圳3</city>
+            <city>珠海4</city>
+        </cities>
+    </province>
+</country>

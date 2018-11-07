@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	姓名：<h3>？</h3>
+	年龄：<p>？</p>
+	<button>获取数据</button>
+</body>
+<script type="text/javascript" src="ajax.js"></script>
+<script type="text/javascript">
+
+var h3 = document.querySelector('h3');
+var p = document.querySelector('p');
+var btn = document.querySelector('button');
+// btn.onclick = function(){
+// 	ajax({
+// 		type:"get",//请求类型
+// 		url:"get.php",//请求的地址
+// 		data:{name:"abc",age:22},//请求传送的数据
+// 		dataType:"json",//返回的数据类型
+// 		success:function (data) {//请求成功执行的函数
+// 			h3.innerHTML = data.name;
+// 			p.innerHTML = data.age;
+// 		},
+// 		error:function () {
+// 			alert("请求失败")
+// 		}
+// 	})
+// }	
+btn.onclick = function() {
+	ajax({
+		type:"get",//请求类型
+		url:"get.php",//请求的地址
+		data:{name:"abc",age:22},//请求传送的数据
+		dataType:"json",//返回的类型类型
+		success:function(data) {//请求成功执行的函数
+			h3.innerHTML = data.name;
+			p.innerHTML = data.age;
+		},
+		error:function () {//请求失败
+			alert("请求失败")
+		}
+	})
+}
+
+
+
+</script>
+</html>
+
+
+

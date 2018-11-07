@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+
+</body>
+<script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+<script type="text/javascript">    
+    $.ajax({   
+        url: "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su", 
+        // url: "http://192.168.0.148/ajax2/data.php",
+        dataType: "jsonp", 
+        jsonp: "cb",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)  
+        // jsonpCallback: "fn",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据  
+        data:{wd:"动画"},
+        success: function (data) {  
+           console.log(data); 
+        },  
+        error: function () {  
+            alert('fail');  
+        }  
+    });  
+
+
+
+</script>
+</html>

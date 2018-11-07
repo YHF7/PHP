@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<h3>1</h3>
+	<ul>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+	</ul>
+	<button>获取数据</button>
+</body>
+<script type="text/javascript">
+/*AJAX是什么-------------------------------------------------
+	AJAX ： 异步 JavaScript and XML
+	通俗的讲，AJAX就是JS通过一个网址去加载数据，这个过程通常是用户不可见的。
+	传统的网页（不使用 AJAX）如果需要更新内容，必需重载整个网页面。	
+	AJAX加载过来的数据，哪些是JS能直接处理的？
+	HTML CSS JS TEXT PNG
+-----------------------------------------------------------*/
+
+/*AJAX的优势-------------------------------------------------
+	异步加载数据，无需切换页面
+	更佳的用户体验：局部刷新、及时验证、操作步骤简化等
+	节省流量
+	JS控制数据的加载，更加灵活多用
+-----------------------------------------------------------*/
+
+/*那么AJAX到底如何使用？--------------------------------------
+	XMLHttpRequest()可扩展超文本传输请求
+	1.创建一个对象
+		所有现代浏览器均支持 XMLHttpRequest 对象
+		（IE5 和 IE6 使用 ActiveXObject("Microsoft.XMLHTTP")
+
+	2.open(method,url,bol)
+		method 参数是用于请求的 HTTP 方法。GET、POST
+			POST：用"POST"方式发送数据,用POST需要设置编码格式
+			xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+
+			GET：用"GET"方式发送数据,只能256KB
+	
+		url 参数是请求的主体。大多数浏览器实施了一个同源安全策略，并且要求这个 URL 与包含脚本的文本具有相同的主机名和端口。
+
+		bol 如果这个参数是 false，请求是同步的
+			如果这个参数是 true 或省略，请求是异步的
+
+	3.send(data)发送请求
+	
+	4.onreadystatechange事件 服务器响应
+		readyState与status:
+
+		readyState有五种状态：
+		　　0 (未初始化)： 
+				(XMLHttpRequest)对象已经创建，但还没有调用open()方法；
+		　　1 (载入)：
+				已经调用open() 方法，但尚未发送请求；
+		　　2 (载入完成)： 
+				请求已经发送完成；
+		　　3 (交互)：
+				可以接收到部分响应数据；
+		　　4 (完成)
+				：已经接收到了全部数据，并且连接已经关闭。
+
+		如此一来，你应该就能明白readyState的功能，而status实际是一种辅状态判断，只是status更多是服务器方的状态判断。关于status，由于它的状态有几十种，我只列出平时常用的几种：
+		　　100——客户必须继续发出请求
+		　　101——客户要求服务器根据请求转换HTTP协议版本
+		　　200——成功
+		　　201——提示知道新文件的URL
+		　　300——请求的资源可在多处得到
+		　　301——删除请求数据
+		　　404——没有发现文件、查询或URl
+		　　500——服务器产生内部错误
+
+
+	5.获取数据
+		responseText	获得字符串形式的响应数据。
+		responseXML	获得 XML 形式的响应数据。
+----------------------------------------------------------*/
+// var btn = document.querySelector("button");
+// var h3 = document.querySelector("h3");
+// var li = document.querySelectorAll('li');
+
+// //创建ajax的对象
+// var xmlhttp = new XMLHttpRequest();
+// //点击获取数据按钮
+// btn.onclick = function () {
+// 	xmlhttp.open("get","xml.xml");
+// 	xmlhttp.send();
+// }
+// //请求状态改变的时候触发
+// xmlhttp.onreadystatechange = function () {
+// 	// console.log(xmlhttp.readyState);
+// 	// console.log(xmlhttp.status)
+// 	if (xmlhttp.readyState==4) {//判断请求完成
+// 		if (xmlhttp.status==200) {//判断请求成功
+// 			var xml = xmlhttp.responseXML;//获取XML文档
+// 			var province = xml.querySelector("name");
+// 			var citys = xml.querySelectorAll("city");
+// 			//把获取到的内容赋给当前页的元素
+// 			h3.innerHTML = province.innerHTML;
+// 			for (var i = 0; i < li.length; i++) {
+// 				li[i].innerHTML = citys[i].innerHTML;
+// 			}
+// 		}else{
+// 			alert("请求失败")
+// 		}
+// 	}
+// }
+
+
+	var btn = document.querySelector("button");
+	var h3 = document.querySelector("h3");
+	var li = document.querySelectorAll('li');
+
+	var xmlhttp = new XMLHttpRequest();
+	btn.onclick = function() {
+		xmlhttp.open("get","xml.xml");
+		xmlhttp.send();
+	}
+	
+
+	xmlhttp.onreadystatechange = function(){
+		// console.log(xmlhttp.readyState);
+		// console.log(xmlhttp.status);
+		if(xmlhttp.readyState==4){
+			if(xmlhttp.status==200){
+				var xml = xmlhttp.responseXML;
+				var province =xml.querySelector("name");
+				var citys = xml.querySelectorAll("city");
+				h3.innerHTML = province.innerHTML;
+				for (var i = 0; i < li.length; i++) {
+					li[i].innerHTML = citys[i].innerHTML;
+				}
+			}else{
+				alert("请求失败");
+			}
+		}
+	}
+
+
+
+</script>
+</html>
